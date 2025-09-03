@@ -39,3 +39,9 @@ A configured VM:
   - Windows with Microsoft Office installed
   - No Internet connection inside VM (air-gapped)
   - Shared folder between host and guest (C:\Users\Public\share on host → Z:\ inside VM)
+
+---
+
+## Usage
+
+  python office_cdr_sandbox.py <office_file>
