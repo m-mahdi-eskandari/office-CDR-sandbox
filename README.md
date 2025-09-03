@@ -29,3 +29,17 @@ The goal is to remove common malicious content (macros, external URLs) before op
 - Python 3.8+
 - Libraries:  
     pip install requests colorama
+
+---
+
+LibreOffice (for cleaning legacy .doc, .xls, .ppt files)
+
+VirtualBox with Guest Additions installed
+
+A configured VM:
+
+Windows with Microsoft Office installed
+
+No Internet connection inside VM (air-gapped)
+
+Shared folder between host and guest (C:\Users\Public\share on host → Z:\ inside VM)
