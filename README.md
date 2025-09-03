@@ -44,4 +44,4 @@ A configured VM:
 
 ## Usage
 
-  python office_cdr_sandbox.py <office_file>
+    python office_cdr_sandbox.py <office_file>
