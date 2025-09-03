@@ -28,5 +28,4 @@ The goal is to remove common malicious content (macros, external URLs) before op
 
 - Python 3.8+
 - Libraries:  
-  `bash
-  pip install requests colorama tqdm
+    pip install requests colorama
