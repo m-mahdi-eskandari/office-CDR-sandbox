@@ -31,10 +31,8 @@ The goal is to remove common malicious content (macros, external URLs) before op
 
       pip install requests colorama
 
----
-
-LibreOffice (for cleaning legacy .doc, .xls, .ppt files)
-VirtualBox with Guest Additions installed
+- LibreOffice (for cleaning legacy .doc, .xls, .ppt files)
+  VirtualBox with Guest Additions installed
 
 A configured VM:
   - Windows with Microsoft Office installed
