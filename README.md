@@ -76,3 +76,10 @@ This project is for research and security analysis only. Use responsibly.
     ------- start VirtualBox sandbox --------
     Copied file to host share: C:\Users\Public\share\safe_example.docx
     ------- Finish --------
+
+---
+
+## Disclaimer
+
+This project is for educational and research purposes only.
+The author assumes no liability for misuse or damage.
