@@ -67,6 +67,8 @@ If LibreOffice is not installed, cleaning legacy files (.doc, .xls, .ppt) will n
 
 This project is for research and security analysis only. Use responsibly.
 
+password office malware: infected
+
 ---
 
 ### Example Output
