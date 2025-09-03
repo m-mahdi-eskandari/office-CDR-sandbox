@@ -1,0 +1,95 @@
+# Unzip converted DOCX
+        unzip_dir = os.path.join(temp_dir, "unzipped")
+        os.makedirs(unzip_dir, exist_ok=True)
+        with zipfile.ZipFile(converted_file, "r") as z:
+            z.extractall(unzip_dir)
+
+        # Replace URLs in .rels files
+        for root_dir, _, files in os.walk(unzip_dir):
+            for fname in files:
+                if fname.endswith(".rels"):
+                    fpath = os.path.join(root_dir, fname)
+                    replace_urls_in_xml(fpath)
+
+        # Repack into safe file with original extension
+        safe_name = "safe_" + os.path.basename(file_path)
+        safe_path = os.path.join(os.path.dirname(file_path), safe_name)
+        with zipfile.ZipFile(safe_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for root_dir, _, files in os.walk(unzip_dir):
+                for fname in files:
+                    full = os.path.join(root_dir, fname)
+                    arcname = os.path.relpath(full, unzip_dir)
+                    zipf.write(full, arcname)
+
+        return safe_path
+
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+def clean_legacy(file_path):
+    """Clean legacy Office files by converting them via LibreOffice."""
+    if not libreoffice_available():
+        print("[CDR][legacy] LibreOffice not available. Cannot clean legacy file safely.")
+        return None
+
+    safe_path = replace_urls_in_legacy(file_path)
+    if safe_path:
+        print(f"[CDR][legacy] cleaned -> {safe_path} (links replaced)")
+        return safe_path
+    else:
+        print("[CDR][legacy] cleaning failed")
+        return None
+
+# -------- VirtualBox Sandbox --------
+def sandbox(file_path):
+    """Run the cleaned file inside a VirtualBox Windows sandbox."""
+    os.makedirs(HOST_SHARE, exist_ok=True)
+
+    file_name = os.path.basename(file_path)
+    host_file_path = os.path.join(HOST_SHARE, file_name)
+    shutil.copy(file_path, host_file_path)
+    print(f"Copied file to host share: {host_file_path}")
+
+    guest_file_path = os.path.join(GUEST_SHARE, file_name)
+
+    subprocess.run([
+        r"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe",
+        "guestcontrol", VM_NAME, "run",
+        "--username", VM_USER,
+        "--password", VM_PASSWORD,
+        "--exe", r"C:\Program Files\Microsoft Office\Office15\WINWORD.EXE",
+        "--", guest_file_path
+    ], check=True)
+
+    return
+
+# -------- Main --------
+if name == "main":
+    if len(sys.argv) < 2:
+        print("Usage: python office_cdr_sandbox.py <office-file>")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+
+    if not os.path.isfile(file_path):
+        print("File not found:", file_path)
+        sys.exit(1)
+
+    safe_path = None
+    if is_modern(file_path):
+        safe_path = clean_modern(file_path)
+    elif is_legacy(file_path):
+        safe_path = clean_legacy(file_path)
+    else:
+        print("Unsupported file type.")
+        sys.exit(1)
+
+    if safe_path:
+        print(f"[CDR] Safe file created: {safe_path}")
+    else:
+        print("[CDR] Cleaning failed.")
+
+    print(Fore.GREEN+'------- start VirtualBox sandbox --------'+Fore.RESET)
+    sandbox(safe_path)
+
+    print(Fore.LIGHTYELLOW_EX+'------- Finish --------'+Fore.RESET)
