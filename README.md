@@ -68,3 +68,13 @@ The VT_API_KEY in the script must be replaced with your own VirusTotal API key.
 If LibreOffice is not installed, cleaning legacy files (.doc, .xls, .ppt) will not work.
 
 This project is for research and security analysis only. Use responsibly.
+
+---
+
+### Example Output
+
+    [CDR][modern] cleaned -> safe_example.docx, removed: ['vbaProject.bin', 'urls in word/_rels/document.xml.rels']
+    [CDR] Safe file created: safe_example.docx
+    ------- start VirtualBox sandbox --------
+    Copied file to host share: C:\Users\Public\share\safe_example.docx
+    ------- Finish --------
