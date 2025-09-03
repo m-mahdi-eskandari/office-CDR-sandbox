@@ -27,8 +27,9 @@ The goal is to remove common malicious content (macros, external URLs) before op
 ## Requirements
 
 - Python 3.8+
-- Libraries:  
-    pip install requests colorama
+- Libraries:
+
+      pip install requests colorama
 
 ---
 
@@ -45,3 +46,25 @@ A configured VM:
 ## Usage
 
     python office_cdr_sandbox.py <office_file>
+
+---
+
+## Workflow
+
+The script checks the file hash on VirusTotal.
+
+If flagged → ❌ printed in red and script exits.
+
+If clean → performs CDR sanitization and creates a safe copy.
+
+The safe file is copied to host share and executed inside VirtualBox VM.
+
+---
+
+## Notes
+
+The VT_API_KEY in the script must be replaced with your own VirusTotal API key.
+
+If LibreOffice is not installed, cleaning legacy files (.doc, .xls, .ppt) will not work.
+
+This project is for research and security analysis only. Use responsibly.
